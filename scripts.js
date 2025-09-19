@@ -132,13 +132,6 @@ function submitGuess() {
     // Your code here!
     logDebug(`📝 submitGuess() called`, 'info');
 
-    // TODO: Call checkGuess(guess, tiles)
-    // TODO: Move to next row: increment currentRow, reset currentTile to 0
-    // TODO: Check win condition: if guess === TARGET_WORD, set gameOver = true
-    // TODO: Check lose condition: if currentRow >= 6, set gameOver = true
-    // TODO: Show appropriate alert for win/lose (use setTimeout for smoother experience)
-    // TODO: Log current game status (won/lost/continuing)
-
     if (currentTile !== 5) {
         logDebug("Not enough letters! Please enter a 5-letter word.", 'warning');
         return;
@@ -168,9 +161,34 @@ function submitGuess() {
     }
 }
 
-// TODO: Implement checkGuess function (the hardest part!)
-// function checkGuess(guess, tiles) {
-//     // Your code here!
-//     // Remember: handle duplicate letters correctly
-//     // Return the result array
-// }
+function checkGuess(guess, tiles) {
+    logDebug(`🔍 Starting analysis for "${guess}"`, 'info');
+    
+    const target = TARGET_WORD.split('');
+    const guessArray = guess.split('');
+    const result = ['absent', 'absent', 'absent', 'absent', 'absent'];
+
+    for (let i = 0; i < 5; i++) {
+        if (guessArray[i] === target[i]) {
+            result[i] = 'correct';
+            target[i] = null;
+            guessArray[i] = null;
+        }
+    }
+    
+    for (let i = 0; i < 5; i++) {
+        if (guessArray[i] !== null) {
+            const index = target.indexOf(guessArray[i]);
+            if (index !== -1) {
+                result[i] = 'present';
+                target[index] = null;
+            }
+        }
+    }
+    
+    for (let i = 0; i < 5; i++) {
+        tiles[i].classList.remove('correct', 'present', 'absent');
+        tiles[i].classList.add(result[i]);
+    }
+    return result;
+}
