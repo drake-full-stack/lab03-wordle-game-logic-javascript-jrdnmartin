@@ -128,9 +128,45 @@ function deleteLetter() {
 }
 
 // TODO: Implement submitGuess function
-// function submitGuess() {
-//     // Your code here!
-// }
+function submitGuess() {
+    // Your code here!
+    logDebug(`📝 submitGuess() called`, 'info');
+
+    // TODO: Call checkGuess(guess, tiles)
+    // TODO: Move to next row: increment currentRow, reset currentTile to 0
+    // TODO: Check win condition: if guess === TARGET_WORD, set gameOver = true
+    // TODO: Check lose condition: if currentRow >= 6, set gameOver = true
+    // TODO: Show appropriate alert for win/lose (use setTimeout for smoother experience)
+    // TODO: Log current game status (won/lost/continuing)
+
+    if (currentTile !== 5) {
+        logDebug("Not enough letters! Please enter a 5-letter word.", 'warning');
+        return;
+    }
+    const currentRowElement = rows[currentRow];
+    const tiles = currentRowElement.querySelectorAll('.tile');
+    let guess = '';
+    tiles.forEach(tile => guess += tile.textContent);
+    logDebug(`Guess submitted: ${guess}`, 'info');
+    logDebug(`Target word: ${TARGET_WORD}`, 'info');
+
+    let result = checkGuess(guess, tiles);
+    logDebug(`Feedback: ${result}`, 'info');
+    if (guess === TARGET_WORD) {
+        gameOver = true;
+        setTimeout(() => alert("🎉 Congratulations! You've guessed the word!"), 100);
+        logDebug("Game won!", 'success');
+    }
+    else {
+        currentRow++;
+        currentTile = 0;
+        if (currentRow >= 6) {
+            gameOver = true;
+            setTimeout(() => alert(`😞 Game over! The word was: ${TARGET_WORD}`), 100);
+            logDebug("Game lost!", 'error');
+        }
+    }
+}
 
 // TODO: Implement checkGuess function (the hardest part!)
 // function checkGuess(guess, tiles) {
