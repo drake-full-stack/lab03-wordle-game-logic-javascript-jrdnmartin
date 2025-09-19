@@ -112,9 +112,20 @@ function addLetter(letter) {
 }
 
 // TODO: Implement deleteLetter function  
-// function deleteLetter() {
-//     // Your code here!
-// }
+function deleteLetter() {
+    // Your code here!
+    logDebug(`🗑️ deleteLetter() called`, 'info');
+
+    if (currentTile > 0) {
+        currentTile--;
+        const currentRowElement = rows[currentRow];
+        const tiles = currentRowElement.querySelectorAll('.tile');
+        tiles[currentTile].textContent = '';
+    }
+
+    logDebug(`Letter deleted from position ${currentTile}`, 'success');
+    logDebug(`Current word: ${getCurrentWord()}`, 'info');
+}
 
 // TODO: Implement submitGuess function
 // function submitGuess() {
