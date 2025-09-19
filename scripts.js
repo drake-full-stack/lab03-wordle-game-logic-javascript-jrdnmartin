@@ -68,14 +68,48 @@ document.addEventListener('DOMContentLoaded', function() {
 // ===== YOUR CHALLENGE: IMPLEMENT THESE FUNCTIONS =====
 
 // TODO: Add keyboard event listener
-// document.addEventListener("keydown", (event) => {
-//     // Your code here!
-// });
+document.addEventListener("keydown", (event) => {
+    // Your code here!
+    if (gameOver) {
+        logDebug("Game is over. Please refresh to play again.", 'warning');
+        return;  // Stop processing if game is over
+    }
+
+    // Handle other key events (e.g., letter input, backspace, enter)
+    console.log(event.key);
+
+    if (event.key === "Enter") {
+        submitGuess();
+    }
+    else if (event.key === "Backspace") {
+        deleteLetter();
+    }
+    else if (/^[a-zA-Z]$/.test(event.key)) {
+        addLetter(event.key.toUpperCase());
+    }
+    else {
+        logDebug(`Ignored key: ${event.key}`, 'info');
+    }
+});
 
 // TODO: Implement addLetter function
-// function addLetter(letter) {
-//     // Your code here!
-// }
+function addLetter(letter) {
+    // Your code here!
+    logDebug(`🎯 addLetter("${letter}") called`, 'info');
+
+    if (currentTile < 5) {
+        const currentRowElement = rows[currentRow];
+        const tiles = currentRowElement.querySelectorAll('.tile');
+        tiles[currentTile].textContent = letter;
+        currentTile++;
+    }
+    else {
+        logDebug("Row is full. Press Enter to submit your guess.", 'warning');
+    }
+
+    logDebug(`Letter "${letter}" added to position ${currentTile - 1}`, 'success');
+    logDebug(`Current word: ${getCurrentWord()}`, 'info');
+}
 
 // TODO: Implement deleteLetter function  
 // function deleteLetter() {
